@@ -11,20 +11,20 @@ import MovieList from "./MovieList";
 import Summary from "./Summary";
 import SelectedMovie from "./SelectedMovie";
 import WatchedList from "./WatchedList";
+import { useLocaStorage } from "./useLocalStorage";
+// import { useMovies } from "./useMovies";
 
 const API = "7407f7aa";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
-  // const [watched, setWatched] = useState(function () {
-  //   const storedValue = localStorage.getItem("watched");
-  //   return JSON.parse(storedValue);
-  // });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+
+  const [watched, setWatched] = useLocaStorage([], "watched");
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -42,13 +42,7 @@ export default function App() {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
 
-  // useEffect(
-  //   function () {
-  //     localStorage.setItem("watched", JSON.stringify(watched));
-  //   },
-  //   [watched]
-  // );
-
+  // const { movies, isLoading, error } = useMovies(query, handleCloseMovie);
   useEffect(
     function () {
       const controller = new AbortController();

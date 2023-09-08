@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import StarRating from "./StarRating";
+import { useKey } from "./useKey";
 
 const API = "7407f7aa";
 
@@ -19,21 +20,7 @@ export default function SelectedMovie({
     (movie) => movie.imdbID === selectedId
   )?.userRating;
 
-  useEffect(
-    function () {
-      function closeMovie(event) {
-        if (event.code === "Escape") {
-          onCloseMovie();
-        }
-      }
-      document.addEventListener("keydown", closeMovie);
-
-      return function () {
-        document.removeEventListener("keydown", closeMovie);
-      };
-    },
-    [onCloseMovie]
-  );
+  useKey(onCloseMovie, "Escape");
 
   function handleAdd() {
     const newMovie = {
